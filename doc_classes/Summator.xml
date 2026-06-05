@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Summator" inherits="Node3D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Summator bitch
+	</brief_description>
+	<description>
+		this is a test class for everything basically
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add">
+			<return type="void" />
+			<param index="0" name="value" type="int" />
+			<description>
+				add shit together
+			</description>
+		</method>
+		<method name="get_total" qualifiers="const">
+			<return type="int" />
+			<description>
+				get total and stuff
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="char_name" type="String" setter="set_char_name" getter="get_char_name" default="&quot;&quot;">
+		</member>
+		<member name="count" type="int" setter="set_count" getter="get_count" default="0">
+		</member>
+		<member name="example_node_path" type="NodePath" setter="set_example_node_path" getter="get_example_node_path" default="NodePath(&quot;&quot;)">
+		</member>
+		<member name="max_speed" type="int" setter="set_max_speed" getter="get_max_speed" default="0">
+		</member>
+		<member name="mesh_instance" type="MeshInstance3D" setter="set_mesh_instance" getter="get_mesh_instance">
+		</member>
+		<member name="mode" type="int" setter="set_mode" getter="get_mode" default="0">
+		</member>
+		<member name="my_angle" type="float" setter="set_my_angle" getter="get_my_angle" default="0.0">
+		</member>
+		<member name="speeds" type="float" setter="set_speeds" getter="get_speeds" default="0.0">
+		</member>
+		<member name="test_resource" type="ExampleResource" setter="set_test_resource" getter="get_test_resource">
+		</member>
+	</members>
+</class>

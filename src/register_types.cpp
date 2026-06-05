@@ -1,6 +1,4 @@
 #include "register_types.h"
-// #include "example_node.h"
-// #include "example_ref.h"
 #include "example_resource.h"
 #include "summator.h"
 #include <godot_cpp/core/class_db.hpp>
@@ -13,9 +11,6 @@ auto initialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT
 	}
 	GDREGISTER_RUNTIME_CLASS(gutils::ExampleResource)
 	GDREGISTER_RUNTIME_CLASS(gutils::Summator)
-	// GDREGISTER_RUNTIME_CLASS(gutils::BaseEntity)
-	// GDREGISTER_RUNTIME_CLASS(gutils::Damage)
-	// GDREGISTER_RUNTIME_CLASS(gutils::StatusEffect)
 }
 
 auto uninitialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT

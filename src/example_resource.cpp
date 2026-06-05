@@ -3,7 +3,7 @@
 using namespace godot;
 using namespace gutils;
 
-ExampleResource::ExampleResource() : test_int(0), test_string("") {
+ExampleResource::ExampleResource() {
 }
 
 void ExampleResource::_bind_methods() {

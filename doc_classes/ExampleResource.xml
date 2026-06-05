@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ExampleResource" inherits="Resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<members>
+		<member name="test_int" type="int" setter="set_test_int" getter="get_test_int" default="0">
+		</member>
+		<member name="test_string" type="String" setter="set_test_string" getter="get_test_string" default="&quot;&quot;">
+		</member>
+	</members>
+</class>
