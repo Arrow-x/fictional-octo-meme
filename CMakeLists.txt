@@ -45,14 +45,15 @@ project(godot-cpp-template
 
 add_library(${LIBNAME} SHARED)
 
+file(GLOB_RECURSE MY_SRC_FILES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/*.h"
+)
+
+# 2. Append the collected files to your target
 target_sources(${LIBNAME}
     PRIVATE
-    src/register_types.cpp
-    src/register_types.h
-    src/summator.cpp
-    src/summator.h
-    src/example_resource.cpp
-    src/example_resource.h
+    ${MY_SRC_FILES}
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target

@@ -3,8 +3,6 @@
 [ext_resource type="Script" uid="uid://bkwk40ybs8kgm" path="res://example.gd" id="1_jdh55"]
 
 [sub_resource type="ExampleResource" id="ExampleResource_2jas5"]
-test_int = 5
-test_string = "sfs"
 
 [node name="Node" type="Node" unique_id=929588413]
 script = ExtResource("1_jdh55")
