@@ -60,5 +60,11 @@ library = env.SharedLibrary(
 
 copy = env.Install("{}/bin/{}/".format(projectdir, env["platform"]), library)
 
+if env["platform"] == "windows":
+    # Ensure we are targeting MSVC specifically
+    if "msvc" in env["TOOLS"] or env.get("CC", "") == "cl":
+        # env.Append(CCFLAGS=["/O2", "/Oi"])         # Compiler flags for both C and C++
+        env.Append(CXXFLAGS=["/Zc:preprocessor"]) # C++ specific flags
+        # env.Append(LINKFLAGS=["/DEBUG"])           # Linker flags
 default_args = [library, copy]
 Default(*default_args)
