@@ -1,5 +1,3 @@
-#pragma once
-
 #include "example_resource.h"
 #include "macros.h"
 
@@ -14,17 +12,16 @@ class Summator : public godot::Node3D {
 public:
 	Summator();
 
-	EXPORT_VAR(int, max_speed, 0);
-	EXPORT_VAR(int, count, 0);
-	EXPORT_VAR(int, mode)
-	EXPORT_VAR(float, my_angle);
-	EXPORT_VAR(float, speeds)
-	EXPORT_VAR(godot::String, char_name);
-	EXPORT_VAR(godot::Ref<gutils::ExampleResource>, test_resource)
-	EXPORT_VAR(godot::NodePath, example_node_path)
-	EXPORT_NODE(godot::MeshInstance3D, mesh_instance);
-
-	EXPORT_VAR(godot::Vector2, current_mouse_pos);
+	EXPORT(int, max_speed, 0);
+	EXPORT(int, count, 10);
+	EXPORT(int, mode)
+	EXPORT(float, my_angle, 0.0f);
+	EXPORT(float, speeds)
+	EXPORT(godot::String, char_name);
+	EXPORT(godot::Ref<gutils::ExampleResource>, test_resource)
+	EXPORT(godot::NodePath, example_node_path)
+	EXPORT(godot::Vector2, current_mouse_pos);
+	EXPORT(godot::MeshInstance3D *, mesh_instance, nullptr);
 
 	auto _notification(int what) -> void;
 	auto _unhandled_input(const godot::Ref<godot::InputEvent> &p_event) -> void override;

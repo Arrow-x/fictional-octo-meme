@@ -7,8 +7,8 @@ namespace gutils {
 class ExampleResource : public godot::Resource { //NOLINT
 	GDCLASS(ExampleResource, godot::Resource) //NOLINT
 public:
-	EXPORT_VAR(int, test_int)
-	EXPORT_VAR(godot::String, test_string)
+	EXPORT(int, test_int)
+	EXPORT(godot::String, test_string)
 public:
 	ExampleResource();
 
