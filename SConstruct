@@ -5,7 +5,7 @@ import sys
 from methods import print_error
 
 
-libname = "EXTENSION-NAME"
+libname = "MyLib"
 projectdir = "project"
 
 localEnv = Environment(tools=["default"], PLATFORM="")
@@ -27,6 +27,10 @@ opts.Update(localEnv)
 Help(opts.GenerateHelpText(localEnv))
 
 env = localEnv.Clone()
+
+env.Tool('compilation_db')
+# This line instantly emits compile_commands.json for built files
+cmd_db = env.CompilationDatabase('compile_commands.json')
 
 if not (os.path.isdir("godot-cpp") and os.listdir("godot-cpp")):
     print_error("""godot-cpp is not available within this folder, as Git submodules haven't been initialized.

@@ -1,7 +1,6 @@
 #include "register_types.h"
 #include "example_resource.h"
 #include "summator.h"
-#include <godot_cpp/core/class_db.hpp>
 
 using namespace godot;
 
@@ -10,7 +9,7 @@ auto initialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT
 		return;
 	}
 	GDREGISTER_RUNTIME_CLASS(gutils::ExampleResource)
-	GDREGISTER_RUNTIME_CLASS(gutils::Summator)
+	GDREGISTER_RUNTIME_CLASS(gutils::Summer)
 }
 
 auto uninitialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT

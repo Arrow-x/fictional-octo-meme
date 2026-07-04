@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bx7k6wka5el6q"]
+
+[node name="Node3D" type="Node3D" unique_id=1549011145]
+
+[node name="Summer" type="Summer" parent="." unique_id=1034863808]
+mode = 0

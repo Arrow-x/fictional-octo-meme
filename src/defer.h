@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma clang diagnostic ignored "-Wc2y-extensions"
 template <typename F>
 struct Defer { //NOLINT
 	Defer(F func) : f(func) {}
@@ -8,7 +8,6 @@ struct Defer { //NOLINT
 private:
 	F f;
 };
-
 #define CONCAT_DETAIL(x, y) x##y
 #define CONCAT(x, y) CONCAT_DETAIL(x, y) //NOLINT
 

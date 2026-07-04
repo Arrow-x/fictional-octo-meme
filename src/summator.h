@@ -6,11 +6,11 @@
 
 namespace gutils {
 
-class Summator : public godot::Node3D {
-	GDCLASS(Summator, godot::Node3D)
+class Summer : public godot::Node3D {
+	GDCLASS(Summer, godot::Node3D)
 
 public:
-	Summator();
+	Summer();
 
 	EXPORT(int, max_speed, 0);
 	EXPORT(int, count, 10);
@@ -33,7 +33,8 @@ public:
 	 *
 	 * @return the count
 	 */
-	[[nodiscard]] auto get_total() const -> int;
+	[[nodiscard]]
+	auto get_total() const -> int;
 	/**
 	 * @brief Adds two numbers together.
 	 *
@@ -44,8 +45,9 @@ public:
 	 * @return void
 	 */
 	auto add(int p_value) -> void;
+	auto test() -> void;
 
 protected:
-	static void _bind_methods();
+	static auto _bind_methods() -> void;
 };
 } //namespace gutils

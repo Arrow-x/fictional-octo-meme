@@ -47,7 +47,6 @@ add_library(${LIBNAME} SHARED)
 
 file(GLOB_RECURSE MY_SRC_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/src/*.h"
 )
 
 # 2. Append the collected files to your target
@@ -55,7 +54,16 @@ target_sources(${LIBNAME}
     PRIVATE
     ${MY_SRC_FILES}
 )
-
+target_precompile_headers(${LIBNAME} PRIVATE
+    <cmath>
+    <godot_cpp/classes/canvas_item.hpp>
+    <godot_cpp/classes/control.hpp>
+    <godot_cpp/classes/node.hpp>
+    <godot_cpp/classes/node2d.hpp>
+    <godot_cpp/classes/node3d.hpp>
+    <godot_cpp/classes/ref_counted.hpp>
+    <godot_cpp/core/class_db.hpp>
+)
 # Fetch a list of the xml files to use for documentation and add to our target
 file(GLOB_RECURSE DOC_XML LIST_DIRECTORIES NO CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/doc_classes/*.xml")
 
