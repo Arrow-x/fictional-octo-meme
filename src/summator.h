@@ -1,4 +1,18 @@
 #pragma once
+#ifndef USING_PCH
+#include "gutils.h"
+#include <godot_cpp/classes/button.hpp>
+#include <godot_cpp/classes/canvas_item.hpp>
+#include <godot_cpp/classes/control.hpp>
+#include <godot_cpp/classes/h_box_container.hpp>
+#include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/input_event_action.hpp>
+#include <godot_cpp/classes/input_event_mouse_button.hpp>
+#include <godot_cpp/classes/label.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/node3d.hpp>
+#include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
+#endif // !USING_PCH
 
 namespace scripts {
 

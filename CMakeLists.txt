@@ -56,7 +56,9 @@ target_sources(${LIBNAME}
 )
 target_precompile_headers(${LIBNAME} PRIVATE
 )
-
+target_compile_definitions(${LIBNAME} PRIVATE
+    USING_PCH
+)
 target_precompile_headers(${LIBNAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/src/pch.h
 # This defines 'USING_PCH' solely inside the generated PCH environment
