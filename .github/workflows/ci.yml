@@ -1,7 +1,6 @@
 # For syntax, see https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
-# This workflow is automatically triggered for every push and pull request, to verify that everything still builds.
-
 name: Continuous Integration
+
 on:
   workflow_call:
   push:
@@ -13,76 +12,84 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Test a few selected combinations of parameters ("test case matrix").
-        # While it would be nice to test all needed combinations, in practice this would a waste of CI usage time.
-        # By building just with a few combinations, we only need a few runners,
-        # while still achieving adequate coverage.
-        # To make a full build with all combinations, use the make_build.yml workflow instead.
         include:
           - target: { platform: linux, arch: x86_64, os: ubuntu-22.04 }
             target-type: template_debug
-            float-precision: single
           - target: { platform: windows, arch: x86_64, os: windows-latest }
             target-type: template_release
-            float-precision: single
           - target: { platform: macos, arch: universal, os: macos-latest }
             target-type: template_debug
-            float-precision: single
           - target: { platform: android, arch: arm64, os: ubuntu-22.04 }
             target-type: template_debug
-            float-precision: single
           - target: { platform: web, arch: wasm32, os: ubuntu-22.04 }
             target-type: template_release
-            float-precision: single
 
     runs-on: ${{ matrix.target.os }}
     steps:
-      # Clone this repository
+      # 1. Checkout repository
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: true
 
-      # Lint
-      #- name: Setup clang-format
-      #  shell: bash
-      #  run: |
-      #    python -m pip install clang-format
-      #- name: Run clang-format
-      #  shell: bash
-      #  run: |
-      #    clang-format src/** --dry-run --Werror
+      # 2. Python & SCons (godot-cpp requirement)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install SCons
+        run: python -m pip install scons
 
-      # Add linux x86_32 toolchain
-      - name: Install multilib support
-        if: ${{ matrix.target.platform == 'linux' && matrix.target.arch == 'x86_32' }}
+      # 3. Environment Dependencies
+      - name: Install Linux dependencies
+        if: ${{ matrix.target.platform == 'linux' }}
         run: |
-          sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build gcc-multilib g++-multilib
 
-      # Setup dependencies
-      - name: Setup godot-cpp
-        uses: ./godot-cpp/.github/actions/setup-godot-cpp
+      - name: Setup Android NDK
+        if: ${{ matrix.target.platform == 'android' }}
+        uses: nttld/setup-ndk@v1
         with:
-          platform: ${{ matrix.target.platform }}
-          em-version: 3.1.62
+          ndk-version: r25c # Godot usually recommends r23c or r25c
 
-      # Build GDExtension (with caches)
-
-      - name: Restore .scons_cache
-        uses: ./godot-cpp/.github/actions/godot-cache-restore
+      - name: Setup Emscripten
+        if: ${{ matrix.target.platform == 'web' }}
+        uses: mymindstorm/setup-emsdk@v14
         with:
-          scons-cache: ${{ github.workspace }}/.scons-cache/
-          cache-name: ${{ matrix.target.platform }}_${{ matrix.target.arch }}_${{ matrix.float-precision }}_${{ matrix.target-type }}
+          version: 3.1.62
 
-      - name: Build GDExtension Debug Build
-        shell: sh
-        env:
-          SCONS_CACHE: ${{ github.workspace }}/.scons-cache/
+      # 4. Configure CMake (Corrected Cross-Compilation)
+      - name: Configure CMake
+        shell: bash
         run: |
-          scons target=${{ matrix.target-type }} platform=${{ matrix.target.platform }} arch=${{ matrix.target.arch }} precision=${{ matrix.float-precision }}
+          # Define common flags
+          BUILD_TYPE="${{ matrix.target-type == 'template_release' && 'Release' || 'Debug' }}"
+          COMMON_FLAGS="-B build -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGODOT_PLATFORM=${{ matrix.target.platform }} -DGODOT_ARCH=${{ matrix.target.arch }}"
 
-      - name: Save .scons_cache
-        uses: ./godot-cpp/.github/actions/godot-cache-save
+          if [ "${{ matrix.target.platform }}" = "web" ]; then
+            # Web requires the emcmake wrapper to set up the toolchain automatically
+            emcmake cmake $COMMON_FLAGS
+
+          elif [ "${{ matrix.target.platform }}" = "android" ]; then
+            # Android requires the NDK toolchain file
+            cmake $COMMON_FLAGS \
+              -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+              -DANDROID_ABI=arm64-v8a
+
+          else
+            # Linux, Windows, and macOS use standard native configuration
+            cmake $COMMON_FLAGS
+          fi
+
+      # 5. Build
+      - name: Build GDExtension
+        run: cmake --build build
+
+      # 6. Upload Artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          scons-cache: ${{ github.workspace }}/.scons-cache/
-          cache-name: ${{ matrix.target.platform }}_${{ matrix.target.arch }}_${{ matrix.float-precision }}_${{ matrix.target-type }}
+          name: gdextension-${{ matrix.target.platform }}-${{ matrix.target.arch }}-${{ matrix.target-type }}
+          path: bin/
+          if-no-files-found: error
