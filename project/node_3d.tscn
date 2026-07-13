@@ -2,5 +2,4 @@
 
 [node name="Node3D" type="Node3D" unique_id=1549011145]
 
-[node name="Summer" type="Summer" parent="." unique_id=1034863808]
-mode = 0
+[node name="Summer" type="Summer" parent="." unique_id=1451269308]

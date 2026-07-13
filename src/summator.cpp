@@ -1,21 +1,7 @@
 #include "summator.h"
-#include "defer.h"
-#include "gutils.h"
-#include "macros.h"
-
-#include <godot_cpp/classes/button.hpp>
-#include <godot_cpp/classes/input_event_mouse_button.hpp>
-#include <godot_cpp/classes/label.hpp>
-#include <godot_cpp/classes/physics_direct_space_state3d.hpp>
-#include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
-#include <godot_cpp/classes/physics_server3d_extension_ray_result.hpp>
-#include <godot_cpp/classes/viewport.hpp>
-#include <godot_cpp/classes/world3d.hpp>
-#include <godot_cpp/variant/callable.hpp>
-#include <iostream>
 
 using namespace godot;
-using namespace gutils;
+using namespace scripts;
 
 Summer::Summer() {}
 
@@ -25,28 +11,35 @@ auto Summer::_notification(int what) -> void {
 			set_process(true);
 			set_physics_process(true);
 
-			break;
-		}
-		case NOTIFICATION_POSTINITIALIZE: {
+			auto hbox = memnew(HBoxContainer);
+			hbox->set_position(Vector2(10, 10));
+			add_child(hbox);
+			hbox->set_owner(this);
+
 			auto label = memnew(Label);
-			label->set_text("kill me now");
-			label->set_position(Vector2(10, 10));
-			add_child(label);
+			label->set_text("kill me now and don't talk to me ever again: ");
+			hbox->add_child(label);
+			label->set_owner(this);
 
 			auto button = memnew(Button);
 			button->set_text("who is your daddy?");
-			button->set_position(Vector2(80, 10));
-			add_child(button);
-			button->connect("pressed", callable_mp(this, &Summer::add).bind(3));
+			button->connect("pressed", callable_mp(this, &Summer::add).bind(3), Object::CONNECT_DEFERRED);
+			hbox->add_child(button);
+			button->set_owner(this);
 
+			auto button2 = memnew(Button);
+			button2->set_text("test me daddy");
+			button2->connect("pressed", callable_mp(this, &Summer::test));
+			hbox->add_child(button2);
+			button2->set_owner(this);
 			break;
 		}
 
 		case NOTIFICATION_PHYSICS_PROCESS: {
 			break;
 		}
-		case NOTIFICATION_PROCESS: {
 			// double dt = get_process_delta_time();
+		case NOTIFICATION_PROCESS: {
 			// print_line("process dt: ", dt);
 			break;
 		}
@@ -55,30 +48,33 @@ auto Summer::_notification(int what) -> void {
 	}
 }
 
-auto Summer::_unhandled_input(const Ref<InputEvent> &p_event) -> void {
+auto Summer::_input(const Ref<InputEvent> &p_event) -> void {
 	// Ref<InputEventMouse> mouse_event = p_event;
 	// if (mouse_event.is_valid()) {
 	// 	print_line("god forbid a white boy get a little motion ", get_class());
 	// 	get_viewport()->set_input_as_handled();
 	// }
-	// Ref<InputEventMouseButton> mouse_event_button = p_event;
-	// if (mouse_event_button.is_valid()) {
-	// 	// if (mouse_event_button->is_pressed() && mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT) {
-	// 	// 	if (EngineDebugger::get_singleton()->is_active()) {
-	// 	// 		EngineDebugger::get_singleton()->debug();
-	// 	// 	}
-	// 	// 	print_line("Left mouse button clicked at: ", mouse_event_button->get_position());
-	// 	// 	add(9);
-	// 	// }
-	// 	if (mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT && mouse_event_button->is_double_click()) {
-	// 		print_line("double click me", mouse_event_button->get_position());
-	// 		// }
-	// 	}
-	// }
+	Ref<InputEventMouseButton> mouse_event_button = p_event;
+	if (mouse_event_button.is_valid()) {
+		// if (mouse_event_button->is_pressed() && mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT) {
+		// 	if (EngineDebugger::get_singleton()->is_active()) {
+		// 		EngineDebugger::get_singleton()->debug();
+		// 	}
+		// 	print_line("Left mouse button clicked at: ", mouse_event_button->get_position());
+		// 	add(9);
+		// }
+		if (mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT && mouse_event_button->is_double_click()) {
+			print_line("double click me", mouse_event_button->get_position());
+			// }
+		}
+	}
+	if (p_event->is_action_pressed("interact")) {
+		print_line("E");
+	}
 }
 
 auto Summer::add(int p_value) -> void {
-	std::cout << "who's your daddy?\n";
+	print_line("sss");
 	count += p_value;
 }
 
@@ -87,27 +83,28 @@ auto Summer::test() -> void {
 	Vector3 ray_from = get_global_position();
 	auto ray_to = ray_from + Vector3(0, -10, 0); // Ray casting 10 units down
 	auto query = PhysicsRayQueryParameters3D::create(ray_from, ray_to);
-	Dictionary o = get_viewport()->get_world_3d()->get_direct_space_state()->intersect_ray(query);
+	Dictionary o = gutils::ray_cast(query);
+	print_line("the ray cast resault: ", o);
 
-	auto s = new LocalVector<int>;
-	DEFER({ delete s; });
+	LocalVector<int> s;
+	print_line("size of LocalVector before: ", sizeof(s));
+	s.push_back(1);
+	s.push_back(3);
+	print_line("size of LocalVector after: ", sizeof(s));
 
-	s->push_back(1);
-	s->push_back(3);
-	for (const auto n : *s) {
+	for (const auto n : s) {
 		print_line(n);
 	}
 
-	auto _m = new HashMap<String, u_int32_t>;
-	DEFER({ delete _m; });
-
-	auto &m = *_m;
+	HashMap<String, u_int32_t> m;
+	print_line("sizeof Dictionary before: ", sizeof(m));
 
 	m["something"] = 3;
+	m["another_thing"] = 4345;
+	m["mommy"] = 69;
+	m["daddy"] = 420;
+	print_line("sizeof Dictionary after: ", sizeof(m));
 	print_line(m["something"]);
-
-	auto some = memnew(ExampleResource);
-	print_line(sizeof(*some));
 }
 
 auto Summer::get_total() const -> int {
@@ -127,7 +124,7 @@ auto Summer::_bind_methods() -> void {
 	REG(Summer, Variant::VECTOR2, current_mouse_pos, PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE);
 
 	REG_NODE(Summer, mesh_instance, "MeshInstance3D");
-	REG_RESOURCE(Summer, test_resource, "ExampleResource");
+	// REG_RESOURCE(Summer, test_resource, "ExampleResource");
 
 	REG_METHOD(Summer, add, value);
 	REG_METHOD(Summer, get_total);

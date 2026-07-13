@@ -55,15 +55,14 @@ target_sources(${LIBNAME}
     ${MY_SRC_FILES}
 )
 target_precompile_headers(${LIBNAME} PRIVATE
-    <cmath>
-    <godot_cpp/classes/canvas_item.hpp>
-    <godot_cpp/classes/control.hpp>
-    <godot_cpp/classes/node.hpp>
-    <godot_cpp/classes/node2d.hpp>
-    <godot_cpp/classes/node3d.hpp>
-    <godot_cpp/classes/ref_counted.hpp>
-    <godot_cpp/core/class_db.hpp>
 )
+
+target_precompile_headers(${LIBNAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/src/pch.h
+# This defines 'USING_PCH' solely inside the generated PCH environment
+    # $<$<COMPILE_LANGUAGE:CXX>:<DEFINE:USING_PCH>>
+)
+
 # Fetch a list of the xml files to use for documentation and add to our target
 file(GLOB_RECURSE DOC_XML LIST_DIRECTORIES NO CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/doc_classes/*.xml")
 

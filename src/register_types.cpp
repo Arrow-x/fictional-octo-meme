@@ -8,8 +8,8 @@ auto initialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	GDREGISTER_RUNTIME_CLASS(gutils::ExampleResource)
-	GDREGISTER_RUNTIME_CLASS(gutils::Summer)
+	GDREGISTER_RUNTIME_CLASS(scripts::ExampleResource)
+	GDREGISTER_RUNTIME_CLASS(scripts::Summer)
 }
 
 auto uninitialize_gdextension_types(ModuleInitializationLevel p_level) { //NOLINT
