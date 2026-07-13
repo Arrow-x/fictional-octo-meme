@@ -15,7 +15,6 @@
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
-#include <godot_cpp/classes/physics_server3d_extension_ray_result.hpp>
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/classes/viewport.hpp>

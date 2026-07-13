@@ -54,15 +54,13 @@ target_sources(${LIBNAME}
     PRIVATE
     ${MY_SRC_FILES}
 )
-target_precompile_headers(${LIBNAME} PRIVATE
-)
+
 target_compile_definitions(${LIBNAME} PRIVATE
     USING_PCH
 )
+
 target_precompile_headers(${LIBNAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/src/pch.h
-# This defines 'USING_PCH' solely inside the generated PCH environment
-    # $<$<COMPILE_LANGUAGE:CXX>:<DEFINE:USING_PCH>>
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target

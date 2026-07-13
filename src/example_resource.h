@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef USING_PCH
 #include "gutils.h"
 #include <godot_cpp/classes/resource.hpp>

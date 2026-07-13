@@ -96,7 +96,7 @@ auto Summer::test() -> void {
 		print_line(n);
 	}
 
-	HashMap<String, u_int32_t> m;
+	HashMap<String, int> m;
 	print_line("sizeof Dictionary before: ", sizeof(m));
 
 	m["something"] = 3;
