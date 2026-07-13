@@ -54,27 +54,26 @@ auto Summer::_input(const Ref<InputEvent> &p_event) -> void {
 	// 	print_line("god forbid a white boy get a little motion ", get_class());
 	// 	get_viewport()->set_input_as_handled();
 	// }
-	Ref<InputEventMouseButton> mouse_event_button = p_event;
-	if (mouse_event_button.is_valid()) {
-		// if (mouse_event_button->is_pressed() && mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT) {
-		// 	if (EngineDebugger::get_singleton()->is_active()) {
-		// 		EngineDebugger::get_singleton()->debug();
-		// 	}
-		// 	print_line("Left mouse button clicked at: ", mouse_event_button->get_position());
-		// 	add(9);
-		// }
-		if (mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT && mouse_event_button->is_double_click()) {
-			print_line("double click me", mouse_event_button->get_position());
-			// }
-		}
-	}
+	// Ref<InputEventMouseButton> mouse_event_button = p_event;
+	// if (mouse_event_button.is_valid()) {
+	// if (mouse_event_button->is_pressed() && mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT) {
+	// 	if (EngineDebugger::get_singleton()->is_active()) {
+	// 		EngineDebugger::get_singleton()->debug();
+	// 	}
+	// 	print_line("Left mouse button clicked at: ", mouse_event_button->get_position());
+	// 	add(9);
+	// }
+	// if (mouse_event_button->get_button_index() == MOUSE_BUTTON_LEFT && mouse_event_button->is_double_click()) {
+	// 	print_line("double click me", mouse_event_button->get_position());
+	// 	// }
+	// }
+	// }
 	if (p_event->is_action_pressed("interact")) {
 		print_line("E");
 	}
 }
 
 auto Summer::add(int p_value) -> void {
-	// print_line("sss");
 	count += p_value;
 }
 
@@ -84,27 +83,7 @@ auto Summer::test() -> void {
 	auto ray_to = ray_from + Vector3(0, -10, 0); // Ray casting 10 units down
 	auto query = PhysicsRayQueryParameters3D::create(ray_from, ray_to);
 	Dictionary o = gutils::ray_cast(query);
-	// print_line("the ray cast resault: ", o);
-
-	LocalVector<int> s;
-	print_line("size of LocalVector before: ", sizeof(s));
-	s.push_back(1);
-	s.push_back(3);
-	// print_line("size of LocalVector after: ", sizeof(s));
-
-	for (const auto n : s) {
-		print_line(n);
-	}
-
-	HashMap<String, int> m;
-	// print_line("sizeof Dictionary before: ", sizeof(m));
-
-	m["something"] = 3;
-	m["another_thing"] = 4345;
-	m["mommy"] = 69;
-	m["daddy"] = 420;
-	// print_line("sizeof Dictionary after: ", sizeof(m));
-	// print_line(m["something"]);
+	print_line("the ray cast resault: ", o);
 }
 
 auto Summer::get_total() const -> int {
