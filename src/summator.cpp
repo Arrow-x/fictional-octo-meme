@@ -5,11 +5,11 @@ using namespace scripts;
 
 Summer::Summer() {}
 
-namespace {
-auto hi() -> void {
-	print_line("hi from hi");
-}
-} //namespace
+// namespace {
+// auto hi() -> void {
+// 	print_line("hi from hi");
+// }
+// } //namespace
 auto Summer::_notification(int what) -> void {
 	switch (what) {
 		case NOTIFICATION_READY: {
@@ -28,7 +28,31 @@ auto Summer::_notification(int what) -> void {
 			button2->set_text("test me daddy");
 			hbox->add_child(button2);
 			button2->connect("pressed", callable_mp(this, &Summer::test));
-			auto c = callable_mp_static(&hi);
+
+			void (*hello)() = []() {
+				print_line("hi from hi");
+			};
+			auto calla1 = callable_mp_static(hello);
+
+			auto calla = callable_mp_static(static_cast<void (*)()>(
+					[]() { print_line("lambda all over the place"); }));
+
+			auto c = callable_mp_static(
+					/* The unary plus operator forces an implicit conversion to happen so it can
+					 perform its math operation. Since a lambda has no native addition operators,
+					 the compiler triggers the closest conversion available: the built-in function
+					 pointer conversion operator. */
+					//NOTE: this only work on statless captureless Lambdas
+					+[]() {
+						print_line("hi from hi");
+					});
+
+			//Simulating gdscript's await keyword..kinda
+			get_tree()->connect("process_frame",
+								callable_mp_static(+[]() {
+									print_line("this is the next frame");
+								}),
+								Object::CONNECT_ONE_SHOT);
 
 			popup_menu = memnew(MenuButton);
 			popup_menu->set_text("who do you like?");
