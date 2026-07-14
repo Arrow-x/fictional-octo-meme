@@ -9,9 +9,11 @@
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_mouse_button.hpp>
 #include <godot_cpp/classes/label.hpp>
+#include <godot_cpp/classes/menu_button.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/physics_ray_query_parameters3d.hpp>
+#include <godot_cpp/classes/popup_menu.hpp>
 #endif // !USING_PCH
 
 namespace scripts {
@@ -32,6 +34,8 @@ public:
 	EXPORT(godot::NodePath, example_node_path)
 	EXPORT(godot::Vector2, current_mouse_pos);
 	EXPORT(godot::MeshInstance3D *, mesh_instance, nullptr);
+
+	godot::MenuButton *popup_menu;
 
 	auto _notification(int what) -> void;
 	auto _input(const godot::Ref<godot::InputEvent> &p_event) -> void override;
@@ -56,6 +60,8 @@ public:
 	 */
 	auto add(int p_value) -> void;
 	auto test() -> void;
+	auto show_menu(int id) -> void;
+	auto soome_func() -> void;
 
 protected:
 	static auto _bind_methods() -> void;

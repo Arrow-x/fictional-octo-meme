@@ -5,6 +5,11 @@ using namespace scripts;
 
 Summer::Summer() {}
 
+namespace {
+auto hi() -> void {
+	print_line("hi from hi");
+}
+} //namespace
 auto Summer::_notification(int what) -> void {
 	switch (what) {
 		case NOTIFICATION_READY: {
@@ -14,24 +19,27 @@ auto Summer::_notification(int what) -> void {
 			auto hbox = memnew(HBoxContainer);
 			hbox->set_position(Vector2(10, 10));
 			add_child(hbox);
-			hbox->set_owner(this);
 
 			auto label = memnew(Label);
 			label->set_text("kill me now and don't talk to me ever again: ");
 			hbox->add_child(label);
-			label->set_owner(this);
-
-			auto button = memnew(Button);
-			button->set_text("who is your daddy?");
-			button->connect("pressed", callable_mp(this, &Summer::add).bind(3), Object::CONNECT_DEFERRED);
-			hbox->add_child(button);
-			button->set_owner(this);
 
 			auto button2 = memnew(Button);
 			button2->set_text("test me daddy");
-			button2->connect("pressed", callable_mp(this, &Summer::test));
 			hbox->add_child(button2);
-			button2->set_owner(this);
+			button2->connect("pressed", callable_mp(this, &Summer::test));
+			auto c = callable_mp_static(&hi);
+
+			popup_menu = memnew(MenuButton);
+			popup_menu->set_text("who do you like?");
+			popup_menu->set_flat(false);
+			popup_menu->get_popup()->add_item("your mom");
+			popup_menu->get_popup()->add_item("your sis");
+			popup_menu->get_popup()->add_item("your cousin");
+			hbox->add_child(popup_menu);
+			popup_menu->get_popup()->connect("index_pressed", callable_mp(this, &Summer::show_menu));
+			c.call();
+
 			break;
 		}
 
@@ -46,6 +54,10 @@ auto Summer::_notification(int what) -> void {
 		default:
 			break;
 	}
+}
+
+auto Summer::show_menu(int id) -> void {
+	print_line("you clicked on: ", popup_menu->get_popup()->get_item_text(id));
 }
 
 auto Summer::_input(const Ref<InputEvent> &p_event) -> void {
@@ -89,6 +101,10 @@ auto Summer::test() -> void {
 auto Summer::get_total() const -> int {
 	print_line("hi daddy");
 	return count;
+}
+
+auto Summer::soome_func() -> void {
+	print_line("hi");
 }
 
 auto Summer::_bind_methods() -> void {
